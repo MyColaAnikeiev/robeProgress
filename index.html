@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>Demonstration</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./progress-robe.css">
+    <style>
+        body{
+            background-color: #2e3737;
+        }
+        .container{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <canvas class="progress-robe" id="canv" width="550", height="450"></canvas>
+        <br>
+        <p></p>
+    </div>
+
+
+    <script src="./rope.js"></script>
+    <script>
+
+        const canvas = document.getElementById('canv');
+        let robe = new Robe({canvas});
+        let progTimeoutID;
+
+
+        // Allow interaction using mouse.
+        canv.onmousemove = function(e){
+            let {left, width} = this.getBoundingClientRect();
+            let x = e.clientX -  left;
+            // Correct way to set progress (from 0 to 1.0)
+            robe.setProgress(x / width);
+
+            if(progTimeoutID)
+                clearTimeout(progTimeoutID);
+        }
+
+        // Emulate progres.
+        let pr = 0;
+        function prog(){
+            if(pr <= 100){
+                pr += Math.floor(Math.random() * 10);
+                robe.setProgress(pr / 100);
+                const delay = 50 + Math.random()*850;
+                progTimeoutID = setTimeout(prog,delay);
+            }
+        }
+        prog();
+    </script>
+</body>
+</html>
